@@ -1,37 +1,38 @@
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import React, { useState, useEffect } from "react";
+import { db } from "../firebase";
 import Post from "./Post";
+import FlipMove from 'react-flip-move';
 
-const posts = [
-    {
-        id: '123',
-        username: "sonny",
-        userImg:"https://links.papareact.com/3ke",
-        img: "https://links.papareact.com/3ke",
-        caption: "This is Post blah blah"
-    },
-    {
-        id: '345',
-        username: "qazi",
-        userImg:"https://links.papareact.com/3ke",
-        img: "https://links.papareact.com/3ke",
-        caption: "That is Post blah blah"
-    }
-]
+
 
 function Posts() {
+
+    const [ posts, setPosts ] = useState([]);
+    console.log(posts);
+
+    useEffect(() => {
+        return onSnapshot(query(collection(db, 'posts'), orderBy('timestamp', 'desc')), snapshot => {
+            setPosts(snapshot.docs);
+        });
+    }, [db]);
+
     return (
         <div>
-            {
-                posts.map((post) => (
-                    <Post
-                        key={post.id}
-                        id={post.id}
-                        username={post.username}
-                        img={post.img}
-                        userImg={post.userImg}
-                        caption={post.caption}
-                    />
-                ))
-            }
+            <FlipMove>
+                {
+                    posts.map((post) => (
+                        <Post
+                            key={post.data().id}
+                            id={post.data().id}
+                            username={post.data().username}
+                            img={post.data().image}
+                            userImg={post.data().profileImg}
+                            caption={post.data().caption}
+                        />
+                    ))
+                }
+            </FlipMove>
         </div>
     )
 }

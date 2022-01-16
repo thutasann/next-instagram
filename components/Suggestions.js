@@ -4,7 +4,6 @@ import { USERS } from "../data/users";
 function Suggestions() {
 
     const [ suggestions, setSuggestions ] = useState([]);
-    console.log(suggestions);
     useEffect(() => {
         setSuggestions(USERS);
     }, []);
