@@ -9,7 +9,6 @@ import FlipMove from 'react-flip-move';
 function Posts() {
 
     const [ posts, setPosts ] = useState([]);
-    console.log(posts);
 
     useEffect(() => {
         return onSnapshot(query(collection(db, 'posts'), orderBy('timestamp', 'desc')), snapshot => {
@@ -23,8 +22,8 @@ function Posts() {
                 {
                     posts.map((post) => (
                         <Post
-                            key={post.data().id}
-                            id={post.data().id}
+                            key={post.id}
+                            id={post.id}
                             username={post.data().username}
                             img={post.data().image}
                             userImg={post.data().profileImg}
